@@ -10,7 +10,7 @@ export default function MascotCard() {
         </h2>
   
         <p className="text-gray-500 mt-3">
-          “Remember to take care of yourself today!”
+          Remember to take care of yourself today !
         </p>
   
         <div className="mt-6 bg-pink-100 text-pink-700 py-2 rounded-full font-semibold">
