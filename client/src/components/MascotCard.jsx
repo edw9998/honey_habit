@@ -14,7 +14,7 @@ export default function MascotCard() {
         </p>
   
         <div className="mt-6 bg-pink-100 text-pink-700 py-2 rounded-full font-semibold">
-          Mood: Aggressive, Mad, Unstable.
+          Mood : Aggressive, Mad, Unstable.
         </div>
   
         <div className="grid grid-cols-2 gap-4 mt-6">
