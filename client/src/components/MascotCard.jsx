@@ -24,7 +24,7 @@ export default function MascotCard() {
             </h3>
   
             <p className="text-2xl mt-2">
-              🪙 120
+              👛 120
             </p>
           </div>
   
