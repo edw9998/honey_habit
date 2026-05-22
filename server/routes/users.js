@@ -23,10 +23,6 @@ router.get("/", (req, res) => {
 
 // UPDATE STREAK
 router.put("/streak", (req, res) => {
-  const today =
-    new Date()
-      .toISOString()
-      .split("T")[0];
 
   db.query(
     "SELECT * FROM users WHERE id=1",
@@ -41,54 +37,19 @@ router.put("/streak", (req, res) => {
 
       const user = result[0];
 
-      const lastDate =
-        user.last_completed_date;
-
       let newStreak =
         user.streak;
 
-      // FIRST COMPLETION EVER
-      if (!lastDate) {
-
-        newStreak = 1;
-
-      } else {
-
-        const last =
-          new Date(lastDate);
-
-        const current =
-          new Date(today);
-
-        const diffTime =
-          current - last;
-
-        const diffDays =
-          diffTime /
-          (1000 * 60 * 60 * 24);
-
-        // CONTINUE STREAK
-        if (diffDays === 1) {
-
-          newStreak += 1;
-
-        }
-
-        // RESET STREAK
-        else if (diffDays > 1) {
-
-          newStreak = 1;
-        }
-      }
+      // SIMPLE PROTOTYPE LOGIC
+      newStreak += 1;
 
       db.query(
         `
         UPDATE users
-        SET streak=?,
-        last_completed_date=?
+        SET streak=?
         WHERE id=1
         `,
-        [newStreak, today],
+        [newStreak],
         (err2) => {
 
           if (err2) {
