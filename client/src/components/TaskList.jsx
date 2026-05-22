@@ -41,9 +41,10 @@ export default function TaskList() {
   };
 
   const toggleTask = async (
-  id,
-  completed
+    id,
+    completed
   ) => {
+
     try {
 
       await axios.put(
@@ -62,7 +63,7 @@ export default function TaskList() {
   } catch (err) {
     console.log(err);
   }
-  };
+};
 
   const deleteTask = async (id) => {
   try {
