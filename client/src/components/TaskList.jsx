@@ -41,10 +41,11 @@ export default function TaskList() {
   };
 
   const toggleTask = async (
-    id,
-    completed
+  id,
+  completed
   ) => {
     try {
+
       await axios.put(
         `http://localhost:5000/tasks/${id}`,
         {
@@ -52,10 +53,15 @@ export default function TaskList() {
         }
       );
 
+      await axios.put(
+        "http://localhost:5000/users/streak"
+      );
+
       fetchTasks();
-    } catch (err) {
-      console.log(err);
-    }
+
+  } catch (err) {
+    console.log(err);
+  }
   };
 
   const deleteTask = async (id) => {
