@@ -35,4 +35,22 @@ router.post("/", (req, res) => {
   );
 });
 
+router.delete("/:id", (req, res) => {
+  db.query(
+    "DELETE FROM tasks WHERE id=?",
+    [req.params.id],
+    (err, result) => {
+
+      if (err) {
+        res.status(500).json(err);
+
+      } else {
+        res.json({
+          message: "Task Deleted !",
+        });
+      }
+    }
+  );
+});
+
 module.exports = router;
