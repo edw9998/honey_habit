@@ -102,7 +102,7 @@ export default function TaskList() {
       </div>
 
       <div className="space-y-3">
-        {tasks.map((task) => (
+        {tasks.filter((task) => !task.completed).map((task) => (
 
   <div
     key={task.id}
