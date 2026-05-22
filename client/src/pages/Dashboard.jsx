@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import MascotCard from "../components/MascotCard";
 import TaskList from "../components/TaskList";
+import HabitTracker from "../components/HabitTracker";
 
 export default function Dashboard() {
   return (
@@ -10,6 +11,7 @@ export default function Dashboard() {
       <div className="p-8 grid lg:grid-cols-2 gap-8">
         <MascotCard />
         <TaskList />
+        <HabitTracker />
       </div>
     </div>
   );
