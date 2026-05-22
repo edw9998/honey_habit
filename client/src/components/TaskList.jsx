@@ -40,6 +40,36 @@ export default function TaskList() {
     }
   };
 
+  const toggleTask = async (
+    id,
+    completed
+  ) => {
+    try {
+      await axios.put(
+        `http://localhost:5000/tasks/${id}`,
+        {
+          completed: !completed,
+        }
+      );
+
+      fetchTasks();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const deleteTask = async (id) => {
+  try {
+    await axios.delete(
+      `http://localhost:5000/tasks/${id}`
+    );
+
+    fetchTasks();
+  } catch (err) {
+    console.log(err);
+  }
+  };
+
   return (
     <div className="bg-white rounded-3xl shadow-xl p-6">
       <h2 className="text-2xl font-bold mb-4">
@@ -67,17 +97,43 @@ export default function TaskList() {
 
       <div className="space-y-3">
         {tasks.map((task) => (
-          <div
-            key={task.id}
-            className="bg-yellow-50 border border-yellow-100 p-4 rounded-2xl flex justify-between"
-          >
-            <span>{task.title}</span>
+          <div key={task.id} className={`p-4 rounded-2xl flex justify-between items-center transition-all ${
+          task.completed ? "bg-gray-200 line-through opacity-70" : "bg-yellow-50"
+          }`}
+>
+          <div className="flex items-center gap-3">
+            <input type="checkbox" checked={task.completed}
+              onChange={() =>
+                toggleTask(task.id, task.completed)
+              }
+              className="w-5 h-5"
+            />
 
-            <span>⏰ {task.focus_minutes}m</span>
+          <span className="font-medium">
+            {task.title}
+          </span>
+
           </div>
+
+          <div className="flex items-center gap-4">
+            <span>
+              ⏰ {task.focus_minutes}m
+            </span>
+
+            <button
+              onClick={() =>
+                deleteTask(task.id)
+            }
+            className="text-red-500 hover:scale-110 transition"
+            >
+            ❌
+            </button>
+          </div>
+        </div>
         ))}
+
       </div>
+
     </div>
   );
-  
 }
