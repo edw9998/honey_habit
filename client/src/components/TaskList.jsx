@@ -103,40 +103,55 @@ export default function TaskList() {
 
       <div className="space-y-3">
         {tasks.map((task) => (
-          <div key={task.id} className={`p-4 rounded-2xl flex justify-between items-center transition-all ${
-          task.completed ? "bg-gray-200 line-through opacity-70" : "bg-yellow-50"
-          }`}
->
-          <div className="flex items-center gap-3">
-            <input type="checkbox" checked={task.completed}
-              onChange={() =>
-                toggleTask(task.id, task.completed)
-              }
-              className="w-5 h-5"
-            />
 
-          <span className="font-medium">
-            {task.title}
-          </span>
+  <div
+    key={task.id}
+    className={`flex items-center justify-between p-4 rounded-2xl shadow-sm ${
+      task.completed
+        ? "bg-green-100"
+        : "bg-yellow-50"
+    }`}
+  >
 
-          </div>
+    {/* LEFT SIDE */}
+    <div className="flex items-center gap-3">
 
-          <div className="flex items-center gap-4">
-            <span>
-              ⏰ {task.focus_minutes}m
-            </span>
+      <input
+        type="checkbox"
+        checked={task.completed}
+        onChange={() =>
+          toggleTask(
+            task.id,
+            task.completed
+          )
+        }
+        className="w-5 h-5"
+      />
 
-            <button
-              onClick={() =>
-                deleteTask(task.id)
-            }
-            className="text-red-500 hover:scale-110 transition"
-            >
-            ❌
-            </button>
-          </div>
-        </div>
-        ))}
+      <span
+        className={`text-lg ${
+          task.completed
+            ? "line-through text-gray-400"
+            : ""
+        }`}
+      >
+        {task.title}
+      </span>
+
+    </div>
+
+    {/* RIGHT SIDE */}
+    <button
+      onClick={() =>
+        deleteTask(task.id)
+      }
+      className="text-red-500 hover:scale-110 transition"
+    >
+      ❌
+    </button>
+
+  </div>
+))}
 
       </div>
 

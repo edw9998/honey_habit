@@ -35,6 +35,29 @@ router.post("/", (req, res) => {
   );
 });
 
+router.put("/:id", (req, res) => {
+
+  const { completed } = req.body;
+
+  db.query(
+    "UPDATE tasks SET completed=? WHERE id=?",
+    [completed, req.params.id],
+    (err, result) => {
+
+      if (err) {
+
+        res.status(500).json(err);
+
+      } else {
+
+        res.json({
+          message: "Task Updated !",
+        });
+      }
+    }
+  );
+});
+
 router.delete("/:id", (req, res) => {
   db.query(
     "DELETE FROM tasks WHERE id=?",
