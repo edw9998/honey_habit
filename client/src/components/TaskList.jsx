@@ -57,7 +57,7 @@ export default function TaskList() {
         "http://localhost:5000/users/streak"
       );
 
-      fetchTasks();
+      window.location.reload();
 
   } catch (err) {
     console.log(err);
