@@ -32,8 +32,13 @@ export default function Login() {
 
       console.log(err);
 
-      alert("Login failed !");
+      console.log(
+        err.response?.data
+      );
+
+      alert(err.response?.data?.message || "Login failed");
     }
+    
   };
 
   return (
