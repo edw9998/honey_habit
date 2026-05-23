@@ -13,13 +13,9 @@ export default function MascotCard() {
 
   return (
     <div className="bg-white rounded-3xl shadow-xl p-8 text-center">
-      {/* Honey Bear Avatar */}
-      <div className="flex justify-center mb-6">
-        <img 
-          src="/logo192.png" 
-          alt="Honey Bear" 
-          className="w-40 h-40 drop-shadow-md"
-        />
+      {/* 🐻 Honey Bear Emoji Avatar */}
+      <div className="flex justify-center mb-6 text-8xl select-none drop-shadow-md">
+        🐻
       </div>
 
       <h1 className="text-4xl font-bold text-amber-800 mb-2">Honey Bear</h1>
