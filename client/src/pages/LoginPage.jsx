@@ -1,10 +1,8 @@
+// client/src/pages/LoginPage.jsx
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../services/api";
 import { useUser } from "../context/UserContext";
-
-// Replace this with your actual logo file later: import honeyLogo from "../assets/honey-jar.png";
-const HONEY_LOGO_PLACEHOLDER = "https://cdn-icons-png.flaticon.com/512/1570/1570863.png"; // Honey jar icon
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -29,15 +27,11 @@ export default function LoginPage() {
       <form onSubmit={handleLogin} className="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md text-center">
         
         {/* 🍯 Honey Habit Logo */}
-        <div className="mb-4 flex justify-center">
-          <img 
-            src={HONEY_LOGO_PLACEHOLDER} 
-            alt="Honey Habit Logo" 
-            className="w-20 h-20 drop-shadow-md object-contain"
-          />
+        <div className="mb-4 flex justify-center text-7xl drop-shadow-md select-none">
+          🍯
         </div>
 
-        {/* 📝 Exact Message You Requested */}
+        {/* 📝 Welcome Message */}
         <h2 className="text-3xl font-bold mb-2 text-gray-800">Welcome to Honey Habit !</h2>
         <p className="text-gray-500 mb-6">Build better habits, track your streaks, stay rewarded.</p>
 
