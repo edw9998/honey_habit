@@ -3,9 +3,12 @@ const router = express.Router();
 
 const db = require("../config/db");
 
-router.get("/", (req, res) => {
+const authMiddleware = require("../middleware/authMiddleware");
+
+router.get("/", authMiddleware, (req, res) => {
   db.query(
-    "SELECT * FROM tasks",
+    "SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC",
+    [req.user.id],
     (err, result) => {
       if (err) {
         res.status(500).json(err);
