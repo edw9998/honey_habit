@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../services/api";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
@@ -11,10 +11,7 @@ export default function TaskList() {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/tasks"
-      );
-
+      const res = await API.get("/tasks");
       setTasks(res.data);
     } catch (err) {
       console.log(err);
@@ -25,13 +22,10 @@ export default function TaskList() {
     if (!taskInput) return;
 
     try {
-      await axios.post(
-        "http://localhost:5000/tasks",
-        {
-          title: taskInput,
-          focus_minutes: 25,
-        }
-      );
+      await API.post("/tasks", {
+        title: taskInput,
+        focus_minutes: 25,
+      });
 
       setTaskInput("");
       fetchTasks();
@@ -40,126 +34,85 @@ export default function TaskList() {
     }
   };
 
-  const toggleTask = async (
-    id,
-    completed
-  ) => {
-
+  const toggleTask = async (id, completed) => {
     try {
+      await API.put(`/tasks/${id}`, {
+        completed: !completed,
+      });
 
-      await axios.put(
-        `http://localhost:5000/tasks/${id}`,
-        {
-          completed: !completed,
-        }
-      );
+      await API.put("/users/streak");
+      await API.put("/users/coins");
 
-      await axios.put(
-        "http://localhost:5000/users/streak"
-      );
-      
-      await axios.put(
-        "http://localhost:5000/users/coins"
-      );
-      
-      window.location.reload();
-
-  } catch (err) {
-    console.log(err);
-  }
-};
+      window.location.reload(); // TODO: Replace with better state update later
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const deleteTask = async (id) => {
-  try {
-    await axios.delete(
-      `http://localhost:5000/tasks/${id}`
-    );
-
-    fetchTasks();
-  } catch (err) {
-    console.log(err);
-  }
+    try {
+      await API.delete(`/tasks/${id}`);
+      fetchTasks();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <div className="bg-white rounded-3xl shadow-xl p-6">
-      <h2 className="text-2xl font-bold mb-4">
-        Daily Tasks
-      </h2>
+      <h2 className="text-2xl font-bold mb-4">Daily Tasks</h2>
 
       <div className="flex gap-3 mb-6">
         <input
           type="text"
           value={taskInput}
-          onChange={(e) =>
-            setTaskInput(e.target.value)
-          }
-          placeholder="Add new task..."
-          className="border p-3 rounded-xl w-full"
+          onChange={(e) => setTaskInput(e.target.value)}
+          placeholder="Add a new task..."
+          className="flex-1 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-amber-500"
         />
-
         <button
           onClick={addTask}
-          className="bg-amber-500 hover:bg-amber-600 text-white px-6 rounded-xl"
+          className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-3 rounded-xl font-medium transition"
         >
           Add
         </button>
       </div>
 
       <div className="space-y-3">
-        {tasks.filter((task) => !task.completed).map((task) => (
+        {tasks.map((task) => (
+          <div
+            key={task.id}
+            className={`flex items-center justify-between p-4 rounded-2xl transition-all ${
+              task.completed ? "bg-gray-100" : "bg-white border border-gray-200"
+            }`}
+          >
+            {/* LEFT SIDE */}
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                checked={task.completed}
+                onChange={() => toggleTask(task.id, task.completed)}
+                className="w-5 h-5 accent-amber-500"
+              />
+              <span
+                className={`text-lg ${
+                  task.completed ? "line-through text-gray-400" : "text-gray-800"
+                }`}
+              >
+                {task.title}
+              </span>
+            </div>
 
-  <div
-    key={task.id}
-    className={`flex items-center justify-between p-4 rounded-2xl shadow-sm ${
-      task.completed
-        ? "bg-green-100"
-        : "bg-yellow-50"
-    }`}
-  >
-
-    {/* LEFT SIDE */}
-    <div className="flex items-center gap-3">
-
-      <input
-        type="checkbox"
-        checked={task.completed}
-        onChange={() =>
-          toggleTask(
-            task.id,
-            task.completed
-          )
-        }
-        className="w-5 h-5"
-      />
-
-      <span
-        className={`text-lg ${
-          task.completed
-            ? "line-through text-gray-400"
-            : ""
-        }`}
-      >
-        {task.title}
-      </span>
-
-    </div>
-
-    {/* RIGHT SIDE */}
-    <button
-      onClick={() =>
-        deleteTask(task.id)
-      }
-      className="text-red-500 hover:scale-110 transition"
-    >
-      ❌
-    </button>
-
-  </div>
-))}
-
+            {/* RIGHT SIDE */}
+            <button
+              onClick={() => deleteTask(task.id)}
+              className="text-red-500 hover:scale-110 transition"
+            >
+              ❌
+            </button>
+          </div>
+        ))}
       </div>
-
     </div>
   );
 }
