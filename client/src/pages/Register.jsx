@@ -1,38 +1,40 @@
 import { useState } from "react";
 import axios from "axios";
 
-export default function Login() {
+export default function Register() {
 
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     try {
 
-      const res = await axios.post(
-        "http://localhost:5000/auth/login",
+      await axios.post(
+        "http://localhost:5000/auth/register",
         {
+          username,
           email,
           password,
         }
       );
 
-      localStorage.setItem(
-        "token",
-        res.data.token
+      alert(
+        "Registration successful !"
       );
 
-      alert("Login successful !");
-
-      window.location.href = "/";
+      window.location.href =
+        "/login";
 
     } catch (err) {
 
       console.log(err);
 
-      alert("Login failed !");
+      alert(
+        "Registration failed !"
+      );
     }
   };
 
@@ -49,7 +51,7 @@ export default function Login() {
     ">
 
       <form
-        onSubmit={handleLogin}
+        onSubmit={handleRegister}
         className="
           bg-white
           p-8
@@ -65,8 +67,24 @@ export default function Login() {
           mb-6
           text-center
         ">
-          Login
+          Register
         </h2>
+
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) =>
+            setUsername(e.target.value)
+          }
+          className="
+            w-full
+            p-3
+            border
+            rounded-xl
+            mb-4
+          "
+        />
 
         <input
           type="email"
@@ -104,15 +122,15 @@ export default function Login() {
           type="submit"
           className="
             w-full
-            bg-amber-500
-            hover:bg-amber-600
+            bg-pink-500
+            hover:bg-pink-600
             text-white
             py-3
             rounded-xl
             font-bold
           "
         >
-          Login
+          Register
         </button>
 
       </form>
