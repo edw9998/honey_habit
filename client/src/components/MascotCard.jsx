@@ -1,14 +1,10 @@
-import {
-  useEffect,
-  useState,
-} from "react";
-
+import {useEffect, useState,} from "react";
 import axios from "axios";
 
 export default function MascotCard() {
 
-  const [streak, setStreak] =
-    useState(0);
+  const [streak, setStreak] = useState(0);
+  const [coins, setCoins] = useState(0);
 
   useEffect(() => {
 
@@ -25,9 +21,8 @@ export default function MascotCard() {
           "http://localhost:5000/users"
         );
 
-      setStreak(
-        res.data.streak
-      );
+      setStreak(res.data.streak);
+      setCoins(res.data.coins);
 
     } catch (err) {
 
@@ -66,7 +61,7 @@ export default function MascotCard() {
           </h3>
 
           <p className="text-2xl mt-2">
-            👛 120
+            👛 {coins}
           </p>
 
         </div>

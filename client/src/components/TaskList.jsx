@@ -57,7 +57,11 @@ export default function TaskList() {
       await axios.put(
         "http://localhost:5000/users/streak"
       );
-
+      
+      await axios.put(
+        "http://localhost:5000/users/coins"
+      );
+      
       window.location.reload();
 
   } catch (err) {
