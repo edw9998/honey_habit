@@ -1,4 +1,3 @@
-// client/src/components/HabitTracker.jsx
 import { useEffect, useState } from "react";
 import API from "../services/api";
 import { useUser } from "../context/UserContext";
@@ -24,11 +23,10 @@ export default function HabitTracker() {
   const handleAddHabit = async (e) => {
     e.preventDefault();
     if (!newHabit.trim()) return;
-
     try {
       await API.post("/habits", { title: newHabit });
-      setNewHabit(""); // Clear input
-      fetchHabits(); // Refresh list
+      setNewHabit("");
+      fetchHabits();
     } catch (err) {
       console.error("Failed to add habit:", err);
     }
@@ -36,27 +34,24 @@ export default function HabitTracker() {
 
   const toggleHabit = async (id, currentCompleted) => {
     try {
-      // Optimistic UI update (optional) or wait for server
       await API.put(`/habits/${id}`, { completed: !currentCompleted });
       
-      // If completed, update streaks and coins
+      // Reward on completion
       if (!currentCompleted) {
         await API.put("/users/streak");
         await API.put("/users/coins");
-        await refreshUser(); 
+        await refreshUser();
       }
       
       fetchHabits();
     } catch (err) {
-      console.error("Failed to update habit:", err);
+      console.error("Failed to toggle habit:", err);
     }
   };
 
   return (
     <div className="bg-white rounded-3xl shadow-xl p-6 mt-6">
       <h2 className="text-2xl font-bold mb-4">Daily Habits</h2>
-      
-      {/* Add Habit Input */}
       <form onSubmit={handleAddHabit} className="flex gap-2 mb-6">
         <input
           type="text"
@@ -65,15 +60,11 @@ export default function HabitTracker() {
           placeholder="e.g. Drink water"
           className="flex-1 p-3 rounded-2xl border-2 border-gray-100 focus:outline-none focus:border-green-300 transition-colors"
         />
-        <button
-          type="submit"
-          className="bg-green-500 hover:bg-green-600 text-white rounded-2xl p-3 transition-colors font-bold px-5"
-        >
+        <button type="submit" className="bg-green-500 hover:bg-green-600 text-white rounded-2xl p-3 transition-colors font-bold px-5">
           +
         </button>
       </form>
 
-      {/* Habits List */}
       <div className="space-y-3">
         {habits.map((habit) => (
           <div
@@ -96,7 +87,7 @@ export default function HabitTracker() {
           </div>
         ))}
         {habits.length === 0 && (
-          <p className="text-gray-400 text-center py-4">No habits yet. Add one above !</p>
+          <p className="text-gray-400 text-center py-4">No habits yet. Add one above!</p>
         )}
       </div>
     </div>
