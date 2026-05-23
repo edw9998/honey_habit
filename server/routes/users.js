@@ -2,112 +2,40 @@ const express = require("express");
 const router = express.Router();
 
 const db = require("../config/db");
+const authMiddleware = require("../middleware/authMiddleware");
 
-// GET USER
-router.get("/", (req, res) => {
+// GET current user profile
+router.get("/", authMiddleware, (req, res) => {
   db.query(
-    "SELECT * FROM users WHERE id=1",
+    "SELECT id, username, streak, coins, created_at FROM users WHERE id = ?",
+    [req.user.id],
     (err, result) => {
-
-      if (err) {
-
-        res.status(500).json(err);
-
-      } else {
-
-        res.json(result[0]);
-      }
+      if (err) return res.status(500).json(err);
+      res.json(result[0]);
     }
   );
 });
 
-// UPDATE STREAK
-router.put("/streak", (req, res) => {
-
+// UPDATE STREAK (called when completing a task)
+router.put("/streak", authMiddleware, (req, res) => {
   db.query(
-    "SELECT * FROM users WHERE id=1",
-    (err, result) => {
-
-      if (err) {
-
-        return res
-          .status(500)
-          .json(err);
-      }
-
-      const user = result[0];
-
-      let newStreak =
-        user.streak;
-
-      // SIMPLE PROTOTYPE LOGIC
-      newStreak += 1;
-
-      db.query(
-        `
-        UPDATE users
-        SET streak=?
-        WHERE id=1
-        `,
-        [newStreak],
-        (err2) => {
-
-          if (err2) {
-
-            return res
-              .status(500)
-              .json(err2);
-          }
-
-          res.json({
-            streak: newStreak,
-          });
-        }
-      );
+    "UPDATE users SET streak = streak + 1 WHERE id = ?",
+    [req.user.id],
+    (err) => {
+      if (err) return res.status(500).json(err);
+      res.json({ message: "Streak updated!" });
     }
   );
 });
 
-// COIN UPDATER
-router.put("/coins", (req, res) => {
-
+// UPDATE COINS (called when completing a task)
+router.put("/coins", authMiddleware, (req, res) => {
   db.query(
-    "SELECT * FROM users WHERE id=1",
-    (err, result) => {
-
-      if (err) {
-
-        return res
-          .status(500)
-          .json(err);
-      }
-
-      const user = result[0];
-
-      const newCoins =
-        user.coins + 10;
-
-      db.query(
-        `
-        UPDATE users
-        SET coins=?
-        WHERE id=1
-        `,
-        [newCoins],
-        (err2) => {
-
-          if (err2) {
-
-            return res
-              .status(500)
-              .json(err2);
-          }
-
-          res.json({
-            coins: newCoins,
-          });
-        }
-      );
+    "UPDATE users SET coins = coins + 10 WHERE id = ?",   // Give 10 coins per task
+    [req.user.id],
+    (err) => {
+      if (err) return res.status(500).json(err);
+      res.json({ message: "Coins updated!" });
     }
   );
 });

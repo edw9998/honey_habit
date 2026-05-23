@@ -35,24 +35,16 @@ export default function TaskList() {
   };
 
   const toggleTask = async (id, completed) => {
-    try {
-      // If the task is being marked as completed → delete it
-      if (!completed) {
-        const taskElement = document.getElementById(`task-${id}`);
-        if (taskElement) taskElement.style.opacity = "0.5";
+    if (!completed) {   // Only act when marking as done
+      try {
+        await API.delete(`/tasks/${id}`);
+        await API.put("/users/streak");
+        await API.put("/users/coins");
 
-        await API.delete(`/tasks/${id}`);           // Delete from db
-        await API.put("/users/streak");             // Update streak
-        await API.put("/users/coins");              // Update coins
-      } 
-      // If somehow unchecking (rare), we can re-fetch
-      else {
-        await API.put(`/tasks/${id}`, { completed: false });
+        fetchTasks();   // Refresh task list
+      } catch (err) {
+        console.error("Error completing task:", err);
       }
-
-      fetchTasks();        // Refresh the list without full page reload
-    } catch (err) {
-      console.error("Error toggling task:", err);
     }
   };
 
