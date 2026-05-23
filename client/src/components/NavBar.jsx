@@ -1,6 +1,6 @@
 export default function Navbar() {
     return (
-      <nav className="bg-white shadow-md px-8 py-4 flex justify-between items-center">
+      <nav className="sticky top-0 z-50 bg-white shadow-md px-8 py-4 flex justify-between items-center">
         <h1 className="text-3xl font-bold text-amber-600">
           Honey Habit 🍯
         </h1>
