@@ -68,4 +68,48 @@ router.put("/streak", (req, res) => {
   );
 });
 
+// COIN UPDATER
+router.put("/coins", (req, res) => {
+
+  db.query(
+    "SELECT * FROM users WHERE id=1",
+    (err, result) => {
+
+      if (err) {
+
+        return res
+          .status(500)
+          .json(err);
+      }
+
+      const user = result[0];
+
+      const newCoins =
+        user.coins + 10;
+
+      db.query(
+        `
+        UPDATE users
+        SET coins=?
+        WHERE id=1
+        `,
+        [newCoins],
+        (err2) => {
+
+          if (err2) {
+
+            return res
+              .status(500)
+              .json(err2);
+          }
+
+          res.json({
+            coins: newCoins,
+          });
+        }
+      );
+    }
+  );
+});
+
 module.exports = router;
