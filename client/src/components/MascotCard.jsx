@@ -1,85 +1,55 @@
-import {useEffect, useState,} from "react";
-import axios from "axios";
+import { useUser } from "../context/UserContext";
 
 export default function MascotCard() {
+  const { user, loading } = useUser();
 
-  const [streak, setStreak] = useState(0);
-  const [coins, setCoins] = useState(0);
-
-  useEffect(() => {
-
-    fetchUser();
-
-  }, []);
-
-  const fetchUser = async () => {
-
-    try {
-
-      const res =
-        await axios.get(
-          "http://localhost:5000/users"
-        );
-
-      setStreak(res.data.streak);
-      setCoins(res.data.coins);
-
-    } catch (err) {
-
-      console.log(err);
-    }
-  };
+  if (loading) {
+    return (
+      <div className="bg-white rounded-3xl shadow-xl p-8 text-center">
+        Loading your bear...
+      </div>
+    );
+  }
 
   return (
-
-    <div className="bg-white rounded-3xl shadow-xl p-6 text-center">
-
-      <div className="text-8xl animate-bounce">
-        🐻
+    <div className="bg-white rounded-3xl shadow-xl p-8 text-center">
+      {/* Honey Bear Avatar */}
+      <div className="flex justify-center mb-6">
+        <img 
+          src="/logo192.png" 
+          alt="Honey Bear" 
+          className="w-40 h-40 drop-shadow-md"
+        />
       </div>
 
-      <h2 className="text-3xl font-bold text-amber-700 mt-4">
-        Honey Bear
-      </h2>
+      <h1 className="text-4xl font-bold text-amber-800 mb-2">Honey Bear</h1>
+      <p className="text-gray-600 mb-6">Remember to take care of yourself today!</p>
 
-      <p className="text-gray-500 mt-3">
-        Remember to take care of yourself today !
-      </p>
-
-      <div className="mt-6 bg-pink-100 text-pink-700 py-2 rounded-full font-semibold">
-
+      {/* Mood */}
+      <div className="bg-pink-100 text-pink-700 px-6 py-3 rounded-2xl inline-block mb-8">
         Mood : Aggressive, Mad, Unstable.
-
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mt-6">
-
-        <div className="bg-yellow-100 rounded-2xl p-4">
-
-          <h3 className="font-bold text-lg">
-            Coins
-          </h3>
-
-          <p className="text-2xl mt-2">
-            👛 {coins}
-          </p>
-
+      {/* Coins and Streak - LIVE UPDATING */}
+      <div className="grid grid-cols-2 gap-4">
+        {/* Coins Card */}
+        <div className="bg-yellow-100 rounded-2xl p-6">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <span className="text-4xl">💰</span>
+            <p className="text-4xl font-bold text-amber-600">{user.coins || 0}</p>
+          </div>
+          <p className="text-gray-700 font-semibold">Honey Coins</p>
         </div>
 
-        <div className="bg-orange-100 rounded-2xl p-4">
-
-          <h3 className="font-bold text-lg">
-            Streak
-          </h3>
-
-          <p className="text-2xl mt-2">
-            🔥 {streak}
-          </p>
-
+        {/* Streak Card */}
+        <div className="bg-orange-100 rounded-2xl p-6">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <span className="text-4xl">🔥</span>
+            <p className="text-4xl font-bold text-orange-600">{user.streak || 0}</p>
+          </div>
+          <p className="text-gray-700 font-semibold">Current Streak</p>
         </div>
-
       </div>
-
     </div>
   );
 }
