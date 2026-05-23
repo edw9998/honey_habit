@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import MascotCard from "../components/MascotCard";
 import TaskList from "../components/TaskList";
 import HabitTracker from "../components/HabitTracker";
+import FocusTimer from "../components/FocusTimer";
 
 export default function Dashboard() {
 
@@ -16,6 +17,7 @@ export default function Dashboard() {
         <div className="flex flex-col gap-6">
           <TaskList />
           <HabitTracker />
+          <FocusTimer />
         </div>
       </div>
 
