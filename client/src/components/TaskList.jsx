@@ -4,9 +4,22 @@ import API from "../services/api";
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState("");
+  const [user, setUser] = useState({ streak: 0, coins: 0 });
 
+  // Fetch user stats
+  const fetchUser = async () => {
+    try {
+      const res = await API.get("/users");
+      setUser(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Call it in useEffect and after completing task
   useEffect(() => {
     fetchTasks();
+    fetchUser();
   }, []);
 
   const fetchTasks = async () => {
@@ -35,15 +48,24 @@ export default function TaskList() {
   };
 
   const toggleTask = async (id, completed) => {
-    if (!completed) {   // Only act when marking as done
+    if (!completed) {
       try {
-        await API.delete(`/tasks/${id}`);
-        await API.put("/users/streak");
-        await API.put("/users/coins");
+        console.log("✅ Completing task:", id);
 
-        fetchTasks();   // Refresh task list
+        await API.delete(`/tasks/${id}`);
+        console.log("✅ Task deleted");
+
+        await API.put("/users/streak");
+        console.log("✅ Streak updated");
+
+        await API.put("/users/coins");
+        console.log("✅ Coins updated");
+
+        await fetchUser();      // ← ADD THIS LINE HERE
+        fetchTasks();           // Refresh tasks
+
       } catch (err) {
-        console.error("Error completing task:", err);
+        console.error("❌ Error completing task:", err.response?.data || err.message);
       }
     }
   };
