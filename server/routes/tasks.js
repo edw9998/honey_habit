@@ -39,23 +39,36 @@ router.post("/", authMiddleware, (req, res) => {
   );
 });
 
-// PUT update task
+// PUT update task: Auto-Delete & Reward on Completion
 router.put("/:id", authMiddleware, (req, res) => {
   const { completed } = req.body;
 
-  db.query(
-    "UPDATE tasks SET completed = ? WHERE id = ? AND user_id = ?",
-    [completed, req.params.id, req.user.id],
-    (err, result) => {
-      if (err) {
-        res.status(500).json(err);
-      } else if (result.affectedRows === 0) {
-        res.status(404).json({ message: "Task not found" });
-      } else {
-        res.json({ message: "Task updated!" });
+  if (completed) {
+    // 1. Reward User (Add 10 Coins and 1 Streak)
+    db.query(
+      "UPDATE users SET coins = coins + 10, streak = streak + 1 WHERE id = ?",
+      [req.user.id],
+      (err) => {
+        if (err) return res.status(500).json({ message: "Server error" });
+
+        // 2. Delete the Task from Database
+        db.query(
+          "DELETE FROM tasks WHERE id = ? AND user_id = ?",
+          [req.params.id, req.user.id],
+          (err, result) => {
+            if (err) return res.status(500).json({ message: "Server error" });
+            if (result.affectedRows === 0) return res.status(404).json({ message: "Task not found" });
+            
+            // Success: Task is gone, user is rewarded
+            res.json({ message: "Task completed! +10 Coins, +1 Streak 🍯" });
+          }
+        );
       }
-    }
-  );
+    );
+  } else {
+    // Fallback: If for some reason completed is false (though unlikely with auto-delete)
+    res.json({ message: "Nothing to update" });
+  }
 });
 
 // DELETE task

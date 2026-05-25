@@ -33,19 +33,21 @@ export default function HabitTracker() {
   };
 
   const toggleHabit = async (id, currentCompleted) => {
+    const newStatus = !currentCompleted;
     try {
-      await API.put(`/habits/${id}`, { completed: !currentCompleted });
-      
-      // Reward on completion
-      if (!currentCompleted) {
+      await API.put(`/habits/${id}`, { completed: newStatus });
+    
+      // Reward only when checking off
+      if (newStatus) {
         await API.put("/users/streak");
-        await API.put("/users/coins");
-        await refreshUser();
+        await API.put("/users/coins", { amount: 5 }); // 5 coins per habit
+        await refreshUser(); // Updates MascotCard instantly
       }
-      
-      fetchHabits();
+    
+      fetchHabits(); // Refresh list to show new state
     } catch (err) {
       console.error("Failed to toggle habit:", err);
+      alert("Couldn't update habit. Check console.");
     }
   };
 

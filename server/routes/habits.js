@@ -35,7 +35,9 @@ router.post("/", authMiddleware, (req, res) => {
 
 // PUT toggle habit completion for today
 router.put("/:id", authMiddleware, (req, res) => {
-  const { completed } = req.body;
+  // Force boolean conversion to prevent type mismatches
+  const completed = req.body.completed === true || req.body.completed === "true";
+  
   if (completed) {
     db.query(
       "INSERT IGNORE INTO habit_logs (habit_id, user_id, log_date) VALUES (?, ?, CURDATE())",

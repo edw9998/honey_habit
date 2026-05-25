@@ -5,7 +5,7 @@ import { useUser } from "../context/UserContext";
 export default function TaskList() {
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState("");
-  const { user, refreshUser } = useUser();   // ← Use context
+  const { refreshUser } = useUser();
 
   const fetchTasks = async () => {
     try {
@@ -31,16 +31,17 @@ export default function TaskList() {
     }
   };
 
+  // ✅ UPDATED: This now triggers the backend logic for Rewards + Auto-Delete
   const toggleTask = async (id) => {
     try {
-      await API.delete(`/tasks/${id}`);
-      await API.put("/users/streak");
-      await API.put("/users/coins");
-
-      await refreshUser();     // ← This updates left side too!
+      // Tell backend "I completed this" -> Backend adds coins/streak AND deletes task
+      await API.put(`/tasks/${id}`, { completed: true }); 
+      
+      // Refresh the user stats (coins/streak) and the task list
+      await refreshUser(); 
       fetchTasks();
     } catch (err) {
-      console.error(err);
+      console.error("Failed to complete task:", err);
     }
   };
 
@@ -82,6 +83,7 @@ export default function TaskList() {
             className="flex items-center justify-between p-4 rounded-2xl bg-white border border-gray-200"
           >
             <div className="flex items-center gap-3">
+              {/* Checkbox triggers toggleTask which rewards & deletes */}
               <input
                 type="checkbox"
                 onChange={() => toggleTask(task.id)}
@@ -90,6 +92,7 @@ export default function TaskList() {
               <span className="text-lg text-gray-800">{task.title}</span>
             </div>
 
+            {/* Manual Delete Button (Optional - just removes, no reward) */}
             <button
               onClick={() => deleteTask(task.id)}
               className="text-red-500 hover:scale-110 transition"
