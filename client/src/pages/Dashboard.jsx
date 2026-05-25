@@ -3,6 +3,7 @@ import MascotCard from "../components/MascotCard";
 import TaskList from "../components/TaskList";
 import HabitTracker from "../components/HabitTracker";
 import FocusTimer from "../components/FocusTimer";
+import Shop from "../components/Shop";
 
 export default function Dashboard() {
   return (
@@ -17,6 +18,7 @@ export default function Dashboard() {
           <TaskList />
           <HabitTracker />
           <FocusTimer />
+          <Shop />
         </div>
       </div>
     </div>
