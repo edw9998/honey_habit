@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 
 // 1. Import your auth routes here
 const authRoutes = require("./routes/auth"); 
+const shopRoutes = require("./routes/shop");
 
 dotenv.config();
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // 3. Mount your routes here
 app.use("/api/auth", authRoutes);
+app.use("/api/shop", shopRoutes);
 
 // 4. Database connection / Other routes / Server start
 const PORT = process.env.PORT || 5000;
