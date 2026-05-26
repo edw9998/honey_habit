@@ -10,6 +10,7 @@ const userRoutes = require("./routes/users");
 const taskRoutes = require("./routes/tasks");
 const habitRoutes = require("./routes/habits");
 const shopRoutes = require("./routes/shop");
+const wellnessRoutes = require("./routes/wellness");
 
 dotenv.config();
 const app = express();
@@ -24,6 +25,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/tasks", taskRoutes);    // This fixes the Tasks 404
 app.use("/api/habits", habitRoutes);  // This fixes the Habits 404
 app.use("/api/shop", shopRoutes);     // This fixes the Shop 401/404
+app.use("/api/wellness", wellnessRoutes);
 
 // 4. Start Server
 const PORT = process.env.PORT || 5000;
