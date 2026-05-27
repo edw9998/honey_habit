@@ -1,4 +1,3 @@
-// server/server.js
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -11,6 +10,7 @@ const taskRoutes = require("./routes/tasks");
 const habitRoutes = require("./routes/habits");
 const shopRoutes = require("./routes/shop");
 const wellnessRoutes = require("./routes/wellness");
+const cosmeticsRoutes = require("./routes/cosmetics");
 
 dotenv.config();
 const app = express();
@@ -26,6 +26,7 @@ app.use("/api/tasks", taskRoutes);    // This fixes the Tasks 404
 app.use("/api/habits", habitRoutes);  // This fixes the Habits 404
 app.use("/api/shop", shopRoutes);     // This fixes the Shop 401/404
 app.use("/api/wellness", wellnessRoutes);
+app.use("/api/cosmetics", cosmeticsRoutes);
 
 // 4. Start Server
 const PORT = process.env.PORT || 5000;
