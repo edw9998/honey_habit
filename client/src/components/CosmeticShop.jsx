@@ -1,3 +1,4 @@
+// client/src/components/CosmeticShop.jsx
 import { useEffect, useState } from "react";
 import API from "../services/api";
 import { useUser } from "../context/UserContext";
@@ -11,18 +12,33 @@ export default function CosmeticShop() {
 
   const fetchCosmetics = async () => {
     try {
-      const [allRes, myRes] = await Promise.all([
-        API.get("/cosmetics"),
-        API.get("/cosmetics/my")
-      ]);
-      const myMap = new Map(myRes.data.map(c => [c.id, c]));
-      const merged = allRes.data.map(c => ({
+      setLoading(true);
+      // Fetch all items
+      const allRes = await API.get("/cosmetics");
+      console.log("📦 All cosmetics:", allRes.data);
+
+      // Fetch owned items (safely handle if empty or fails)
+      let myRes = [];
+      try {
+        myRes = await API.get("/cosmetics/my");
+        console.log("🎒 Owned cosmetics:", myRes.data);
+      } catch (err) {
+        console.log("ℹ️ User owns 0 items (safe to ignore)");
+      }
+
+      const myMap = new Map((myRes.data || []).map(c => [c.id, c]));
+      const merged = (allRes.data || []).map(c => ({
         ...c,
         owned: myMap.has(c.id),
         is_equipped: myMap.has(c.id) ? myMap.get(c.id).is_equipped : false
       }));
+
       setCosmetics(merged);
-    } catch (err) { console.error(err); } finally { setLoading(false); }
+    } catch (err) {
+      console.error("❌ Failed to fetch cosmetics:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleBuy = async (id, cost) => {
@@ -41,7 +57,16 @@ export default function CosmeticShop() {
     } catch (err) { console.error(err); }
   };
 
-  if (loading) return <p className="text-center text-gray-500 py-4">Loading closet...</p>;
+  if (loading) return <p className="text-center text-gray-500 py-4 animate-pulse">Loading closet...</p>;
+
+  if (cosmetics.length === 0) {
+    return (
+      <div className="bg-white rounded-3xl shadow-xl p-6 mt-6 text-center">
+        <p className="text-gray-500">🛍️ No cosmetics available yet.</p>
+        <p className="text-sm text-gray-400 mt-1">Check console or run the seed SQL to add items.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-3xl shadow-xl p-6 mt-6">
