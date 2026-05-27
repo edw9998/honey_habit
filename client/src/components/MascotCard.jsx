@@ -29,16 +29,16 @@ export default function MascotCard() {
       {/* 🐻 Layered Avatar Container */}
       <div className="relative w-40 h-40 mx-auto mb-6">
         {/* Base Bear */}
-        <div className="absolute inset-0 flex items-center justify-center text-8xl select-none drop-shadow-md">🐻</div>
+        <div className="absolute inset-0 flex items-center justify-center text-8xl select-none drop-shadow-md pointer-events-none">🐻</div>
         
         {/* Hat: Sits above head */}
-        {hat && <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-5xl drop-shadow-lg z-10">{hat}</div>}
+        {hat && <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-5xl drop-shadow-lg z-10 pointer-events-none">{hat}</div>}
         
-        {/* Face/Glasses: Positioned over eyes, slightly scaled to sit cleanly */}
-        {face && <div className="absolute top-[25%] left-1/2 -translate-x-1/2 text-4xl scale-105 opacity-95 drop-shadow-md z-10">{face}</div>}
+        {/* Face/Glasses: Moved up to eye line, pointer-events-none prevents click blocking */}
+        {face && <div className="absolute top-[18%] left-1/2 -translate-x-1/2 text-4xl scale-105 opacity-95 drop-shadow-md z-10 pointer-events-none">{face}</div>}
         
         {/* Accessory: Bottom right */}
-        {accessory && <div className="absolute bottom-2 right-2 text-3xl drop-shadow-lg z-10">{accessory}</div>}
+        {accessory && <div className="absolute bottom-2 right-2 text-3xl drop-shadow-lg z-10 pointer-events-none">{accessory}</div>}
       </div>
 
       <h1 className="text-4xl font-bold text-amber-800 mb-2">Honey Bear</h1>
