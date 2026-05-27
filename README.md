@@ -4,10 +4,10 @@
 # Cloning
  Run 'git clone https://github.com/edw9998/honey_habit.git'
 
-# Express Server
+# Express Server(Node & Express Required)
  1. Go to |honey_habit/server| <br>
  2. Run 'npx nodemon server.js'
 
-# Client
+# Client(React, Tailwind styles & Axios Required)
  1. Go to |honey_habit/client| <br>
  2. Run 'npm start'
