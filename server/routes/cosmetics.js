@@ -26,7 +26,6 @@ router.get("/my", authMiddleware, (req, res) => {
   );
 });
 
-// POST buy a cosmetic
 router.post("/buy", authMiddleware, (req, res) => {
   const { cosmeticId } = req.body;
   const userId = req.user.id;
@@ -36,7 +35,8 @@ router.post("/buy", authMiddleware, (req, res) => {
     if (items.length === 0) return res.status(404).json({ message: "Item not found" });
 
     const cost = items[0].cost;
-    // Atomic coin check & deduct
+
+    // 1. Deduct coins safely
     db.query(
       "UPDATE users SET coins = coins - ? WHERE id = ? AND coins >= ?",
       [cost, userId, cost],
@@ -44,11 +44,20 @@ router.post("/buy", authMiddleware, (req, res) => {
         if (err) return res.status(500).json({ message: "Server error" });
         if (update.affectedRows === 0) return res.status(400).json({ message: "Not enough coins!" });
 
-        db.query(
-          "INSERT IGNORE INTO user_cosmetics (user_id, cosmetic_id) VALUES (?, ?)",
-          [userId, cosmeticId],
-          (err) => err ? res.status(500).json({ message: "Failed to save" }) : res.json({ message: "Cosmetic purchased! 🎁" })
-        );
+        // 2. Check if already owned
+        db.query("SELECT 1 FROM user_cosmetics WHERE user_id = ? AND cosmetic_id = ?", [userId, cosmeticId], (err, existing) => {
+          if (err) return res.status(500).json({ message: "Server error" });
+          if (existing.length > 0) return res.json({ message: "Already owned! 🎁" });
+
+          // 3. Insert new ownership
+          db.query("INSERT INTO user_cosmetics (user_id, cosmetic_id) VALUES (?, ?)", [userId, cosmeticId], (err) => {
+            if (err) {
+              console.error("🔴 DB Purchase Error:", err.sqlMessage || err); // Logs exact MySQL error
+              return res.status(500).json({ message: "Failed to save" });
+            }
+            res.json({ message: "Cosmetic purchased! 🎁" });
+          });
+        });
       }
     );
   });
