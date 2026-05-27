@@ -5,9 +5,9 @@
  Run 'git clone https://github.com/edw9998/honey_habit.git'
 
 # Express Server
- Go to |honey_habit/server|
- Run 'npx nodemon server.js'
+ 1. Go to |honey_habit/server| <br>
+ 2. Run 'npx nodemon server.js'
 
 # Client
- Go to |honey_habit/client|
- Run 'npm start'
+ 1. Go to |honey_habit/client| <br>
+ 2. Run 'npm start'
