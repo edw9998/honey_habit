@@ -17,7 +17,9 @@ export default function MascotCard() {
     } catch (err) { console.error(err); }
   };
 
+  // Extract by type for precise layering
   const hat = equipped.find(c => c.type === 'hat')?.emoji;
+  const face = equipped.find(c => c.type === 'face')?.emoji;
   const accessory = equipped.find(c => c.type === 'accessory')?.emoji;
 
   if (loading) return <div className="bg-white rounded-3xl shadow-xl p-8 text-center">Loading your bear...</div>;
@@ -26,9 +28,17 @@ export default function MascotCard() {
     <div className="bg-white rounded-3xl shadow-xl p-8 text-center">
       {/* 🐻 Layered Avatar Container */}
       <div className="relative w-40 h-40 mx-auto mb-6">
+        {/* Base Bear */}
         <div className="absolute inset-0 flex items-center justify-center text-8xl select-none drop-shadow-md">🐻</div>
-        {hat && <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-5xl drop-shadow-lg animate-bounce-slow">{hat}</div>}
-        {accessory && <div className="absolute bottom-2 right-0 text-4xl drop-shadow-lg">{accessory}</div>}
+        
+        {/* Hat: Sits above head */}
+        {hat && <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-5xl drop-shadow-lg">{hat}</div>}
+        
+        {/* Face/Glasses: Centered over eyes, slightly transparent to blend */}
+        {face && <div className="absolute top-[38%] left-1/2 -translate-x-1/2 text-4xl opacity-90 drop-shadow-md">{face}</div>}
+        
+        {/* Accessory: Bottom right (held/worn) */}
+        {accessory && <div className="absolute bottom-2 right-2 text-3xl drop-shadow-lg">{accessory}</div>}
       </div>
 
       <h1 className="text-4xl font-bold text-amber-800 mb-2">Honey Bear</h1>
