@@ -32,20 +32,20 @@ export default function MascotCard() {
         <div className="absolute inset-0 flex items-center justify-center text-8xl select-none drop-shadow-md">🐻</div>
         
         {/* Hat: Sits above head */}
-        {hat && <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-5xl drop-shadow-lg">{hat}</div>}
+        {hat && <div className="absolute -top-5 left-1/2 -translate-x-1/2 text-5xl drop-shadow-lg z-10">{hat}</div>}
         
-        {/* Face/Glasses: Centered over eyes, slightly transparent to blend */}
-        {face && <div className="absolute top-[38%] left-1/2 -translate-x-1/2 text-4xl opacity-90 drop-shadow-md">{face}</div>}
+        {/* Face/Glasses: Positioned over eyes, slightly scaled to sit cleanly */}
+        {face && <div className="absolute top-[25%] left-1/2 -translate-x-1/2 text-4xl scale-105 opacity-95 drop-shadow-md z-10">{face}</div>}
         
-        {/* Accessory: Bottom right (held/worn) */}
-        {accessory && <div className="absolute bottom-2 right-2 text-3xl drop-shadow-lg">{accessory}</div>}
+        {/* Accessory: Bottom right */}
+        {accessory && <div className="absolute bottom-2 right-2 text-3xl drop-shadow-lg z-10">{accessory}</div>}
       </div>
 
       <h1 className="text-4xl font-bold text-amber-800 mb-2">Honey Bear</h1>
       <p className="text-gray-600 mb-6">Remember to take care of yourself today!</p>
 
       <div className="bg-pink-100 text-pink-700 px-6 py-3 rounded-2xl inline-block mb-8">
-        Mood : Focused & Productive ! 🌟
+        Mood : Happy & Productive ! 🌟
       </div>
 
       <div className="grid grid-cols-2 gap-4">
