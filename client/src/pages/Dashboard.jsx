@@ -5,6 +5,7 @@ import HabitTracker from "../components/HabitTracker";
 import FocusTimer from "../components/FocusTimer";
 import Shop from "../components/Shop";
 import WellnessTracker from "../components/WellnessTracker";
+import CosmeticShop from "../components/CosmeticShop";
 
 export default function Dashboard() {
   return (
@@ -20,6 +21,7 @@ export default function Dashboard() {
           <TaskList />
           <HabitTracker />
           <WellnessTracker />
+          <CosmeticShop />
           <FocusTimer />
           <Shop />
         </div>
