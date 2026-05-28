@@ -15,7 +15,7 @@ export default function Dashboard() {
   return (
     <>
       {/* ✅ Dynamic Background (sits behind everything) */}
-      <HiveBackground coins={user?.coins || 0} />
+      <HiveBackground coins={user?.lifetime_coins || 0} />
       
       {/* ✅ Content wrapper (static bg removed to let HiveBackground shine) */}
       <div className="min-h-screen">

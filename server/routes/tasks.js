@@ -44,9 +44,9 @@ router.put("/:id", authMiddleware, (req, res) => {
   const { completed } = req.body;
 
   if (completed) {
-    // 1. Reward User (Add 10 Coins and 1 Streak)
+    // 1. Reward User (Add + save 10 Coins and 1 Streak)
     db.query(
-      "UPDATE users SET coins = coins + 10, streak = streak + 1 WHERE id = ?",
+      "UPDATE users SET coins = coins + 10, streak = streak + 1, lifetime_coins = lifetime_coins + 10 WHERE id = ?",
       [req.user.id],
       (err) => {
         if (err) return res.status(500).json({ message: "Server error" });

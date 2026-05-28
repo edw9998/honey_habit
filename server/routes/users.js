@@ -6,7 +6,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 // GET Current User Profile (Coins, Streak, Email)
 router.get("/me", authMiddleware, (req, res) => {
   db.query(
-    "SELECT id, email, coins, streak FROM users WHERE id = ?",
+    "SELECT id, email, coins, lifetime_coins, streak FROM users WHERE id = ?",
     [req.user.id],
     (err, result) => {
       if (err) return res.status(500).json({ message: "Server error" });
@@ -32,8 +32,8 @@ router.put("/streak", authMiddleware, (req, res) => {
 router.put("/coins", authMiddleware, (req, res) => {
   const { amount } = req.body;
   db.query(
-    "UPDATE users SET coins = coins + ? WHERE id = ?",
-    [amount, req.user.id],
+    "UPDATE users SET coins = coins + ?, lifetime_coins = lifetime_coins + ? WHERE id = ?",
+    [amount, amount, req.user.id],
     (err, result) => {
       if (err) return res.status(500).json({ message: "Server error" });
       res.json({ message: "Coins updated" });

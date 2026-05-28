@@ -46,7 +46,7 @@ router.post("/update", authMiddleware, (req, res) => {
         (err) => {
           if (err) return res.status(500).json({ message: "Server error" });
           if (bonus > 0) {
-            db.query("UPDATE users SET coins = coins + ? WHERE id = ?", [bonus, req.user.id]);
+            db.query("UPDATE users SET coins = coins + ?, lifetime_coins = lifetime_coins + ? WHERE id = ?", [bonus, bonus, req.user.id]);
           }
           res.json({ message: "Wellness log updated", bonus });
         }
