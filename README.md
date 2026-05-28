@@ -8,6 +8,6 @@
  1. Go to |honey_habit/server| <br>
  2. Run 'npx nodemon server.js'
 
-# Client(React, *react_router_dom*, Tailwind styles & Axios Required)
+# Client(React, *react_router_dom*, *canvas_confetti*, Tailwind styles & Axios Required)
  1. Go to |honey_habit/client| <br>
  2. Run 'npm start'
